@@ -1,0 +1,1347 @@
+---
+title: "Novas analises - resposta"
+author: "Saulo Gil"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+# Carregando pacotes
+
+```{r}
+# Carregando pacotes
+library(tidyverse)
+library(ggplot2)
+library(sjPlot)
+library(patchwork)
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# lendo a base de dados
+
+data <- readRDS(file = "../Data_clean/df")
+
+```
+
+# FMD como binária vs composite
+```{r out.width="100%"}
+plot_grpfrq(as.factor(data$composite_death_icu_or_vent),
+              as.factor(data$classification_fmd_0_low_1_normal_3_43_percent),
+              geom.colors = "gs")
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = composite_death_icu_or_vent ~ classification_fmd_0_low_1_normal_3_43_percent,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = composite_death_icu_or_vent ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = composite_death_icu_or_vent ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD como binária vs mortalidade
+
+```{r out.width="100%"}
+plot_grpfrq(as.factor(data$deaths_0_no_1_yes),
+              as.factor(data$classification_fmd_0_low_1_normal_3_43_percent),
+              geom.colors = "gs")
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+
+## Modelo 0
+```{r}
+m1 <- glm(formula = deaths_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = deaths_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = deaths_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD como binária vs ICU admission
+
+```{r out.width="100%"}
+plot_grpfrq(as.factor(data$icu_admission_0_no_1_yes),
+              as.factor(data$classification_fmd_0_low_1_normal_3_43_percent),
+              geom.colors = "gs")
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = icu_admission_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = icu_admission_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = icu_admission_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD como binária vs ventilação mecanica 
+
+```{r}
+plot_grpfrq(as.factor(data$invasive_mechanical_ventilation_0_no_1_yes),
+              as.factor(data$classification_fmd_0_low_1_normal_3_43_percent),
+              geom.colors = "gs")
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD como binária vs evento trombotico 
+
+```{r out.width="100%"}
+plot_grpfrq(as.factor(data$thrombotic_events_0_no_1_yes),
+              as.factor(data$classification_fmd_0_low_1_normal_3_43_percent),
+              geom.colors = "gs")
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = thrombotic_events_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = thrombotic_events_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = thrombotic_events_0_no_1_yes ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD como continua vs composite
+
+```{r out.width="100%"}
+boxplot(fmd_percent_1s ~ composite_death_icu_or_vent,
+        data = data)
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = composite_death_icu_or_vent ~ fmd_percent_1s,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = composite_death_icu_or_vent ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = composite_death_icu_or_vent ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD como continua vs mortalidade
+
+```{r out.width="100%"}
+boxplot(fmd_percent_1s ~ deaths_0_no_1_yes,
+        data = data)
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# lendo a base de dados
+
+data <- readRDS(file = "../Data_clean/df")
+
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = deaths_0_no_1_yes ~ fmd_percent_1s,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = deaths_0_no_1_yes ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = deaths_0_no_1_yes ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD como continua vs ICU admission
+
+```{r out.width="100%"}
+boxplot(fmd_percent_1s ~ icu_admission_0_no_1_yes,
+        data = data)
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = icu_admission_0_no_1_yes ~ fmd_percent_1s,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = icu_admission_0_no_1_yes ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = icu_admission_0_no_1_yes ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD como continua vs ventilação mecanica 
+
+```{r out.width="100%"}
+boxplot(fmd_percent_1s ~ invasive_mechanical_ventilation_0_no_1_yes,
+        data = data)
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ fmd_percent_1s,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD como continua vs evento trombotico 
+
+```{r out.width="100%"}
+boxplot(fmd_percent_1s ~ invasive_mechanical_ventilation_0_no_1_yes,
+        data = data)
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = thrombotic_events_0_no_1_yes ~ fmd_percent_1s,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = thrombotic_events_0_no_1_yes ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = thrombotic_events_0_no_1_yes ~ fmd_percent_1s +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# IMT como binária vs composite
+
+```{r out.width="100%"}
+plot_grpfrq(as.factor(data$composite_death_icu_or_vent),
+              as.factor(data$classification_imt_75th_percentile_caps_0_normal_1_high),
+              geom.colors = "gs")
+```
+
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = composite_death_icu_or_vent ~ classification_imt_75th_percentile_caps_0_normal_1_high,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = composite_death_icu_or_vent ~ classification_imt_75th_percentile_caps_0_normal_1_high +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = composite_death_icu_or_vent ~ classification_fmd_0_low_1_normal_3_43_percent +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# IMT como binária vs mortalidade
+
+```{r  out.width="100%"}
+plot_grpfrq(as.factor(data$deaths_0_no_1_yes),
+              as.factor(data$classification_imt_75th_percentile_caps_0_normal_1_high),
+              geom.colors = "gs")
+```
+
+## Modelo 0
+```{r  out.width="100%"}
+m1 <- glm(formula = deaths_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = deaths_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = deaths_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# IMT como binária vs ICU admission
+
+```{r out.width="100%"}
+plot_grpfrq(as.factor(data$icu_admission_0_no_1_yes),
+              as.factor(data$classification_imt_75th_percentile_caps_0_normal_1_high),
+              geom.colors = "gs")
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = icu_admission_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = icu_admission_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = icu_admission_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# IMT como binária vs ventilação mecanica 
+
+```{r out.width="100%"}
+plot_grpfrq(as.factor(data$invasive_mechanical_ventilation_0_no_1_yes),
+              as.factor(data$classification_imt_75th_percentile_caps_0_normal_1_high),
+              geom.colors = "gs")
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# IMT como binária vs evento trombotico 
+
+```{r out.width="100%"}
+plot_grpfrq(as.factor(data$thrombotic_events_0_no_1_yes),
+              as.factor(data$classification_imt_75th_percentile_caps_0_normal_1_high),
+              geom.colors = "gs")
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = thrombotic_events_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = thrombotic_events_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = thrombotic_events_0_no_1_yes ~ classification_imt_75th_percentile_caps_0_normal_1_high +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# SRAUC vs composite
+
+```{r out.width="100%"}
+boxplot(formula =  srau_cpeak ~ composite_death_icu_or_vent,
+        data = data)
+  
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = composite_death_icu_or_vent ~ srau_cpeak,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = composite_death_icu_or_vent ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = composite_death_icu_or_vent ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# SRAUC vs mortalidade
+
+```{r out.width="100%"}
+boxplot(formula =  srau_cpeak ~ deaths_0_no_1_yes,
+        data = data)
+  
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = deaths_0_no_1_yes ~ srau_cpeak,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = deaths_0_no_1_yes ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = deaths_0_no_1_yes ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# SRAUC vs ICU admission
+
+```{r out.width="100%"}
+boxplot(formula =  srau_cpeak ~ icu_admission_0_no_1_yes,
+        data = data)
+  
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = icu_admission_0_no_1_yes ~ srau_cpeak,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = icu_admission_0_no_1_yes ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = icu_admission_0_no_1_yes ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# SRAUC vs ventilação mecanica 
+
+```{r out.width="100%"}
+boxplot(formula =  srau_cpeak ~ invasive_mechanical_ventilation_0_no_1_yes,
+        data = data)
+  
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ srau_cpeak,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# SRAUC vs evento trombotico 
+
+```{r out.width="100%"}
+boxplot(formula =  srau_cpeak ~ thrombotic_events_0_no_1_yes,
+        data = data)
+  
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = thrombotic_events_0_no_1_yes ~ srau_cpeak,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = thrombotic_events_0_no_1_yes ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = thrombotic_events_0_no_1_yes ~ srau_cpeak +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD\SRAUC vs composite
+
+```{r out.width="100%"}
+boxplot(formula =  fmd_au_ctomax ~ composite_death_icu_or_vent,
+        data = data)
+  
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = composite_death_icu_or_vent ~ fmd_au_ctomax,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = composite_death_icu_or_vent ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = composite_death_icu_or_vent ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD\SRAUC vs mortalidade
+
+```{r out.width="100%"}
+boxplot(formula =  fmd_au_ctomax ~ deaths_0_no_1_yes,
+        data = data)
+  
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = deaths_0_no_1_yes ~ fmd_au_ctomax,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = deaths_0_no_1_yes ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = deaths_0_no_1_yes ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD\SRAUC vs ICU admission
+
+```{r out.width="100%"}
+boxplot(formula =  fmd_au_ctomax ~ icu_admission_0_no_1_yes,
+        data = data)
+  
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = icu_admission_0_no_1_yes ~ fmd_au_ctomax,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = icu_admission_0_no_1_yes ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = icu_admission_0_no_1_yes ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD\SRAUC vs ventilação mecanica 
+
+```{r out.width="100%"}
+boxplot(formula =  fmd_au_ctomax ~ invasive_mechanical_ventilation_0_no_1_yes,
+        data = data)
+  
+```
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ fmd_au_ctomax,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = invasive_mechanical_ventilation_0_no_1_yes ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# FMD\SRAUC vs evento trombotico 
+
+```{r out.width="100%"}
+boxplot(formula =  fmd_au_ctomax ~ thrombotic_events_0_no_1_yes,
+        data = data)
+  
+```
+
+
+## Modelo 0
+```{r echo=TRUE}
+m1 <- glm(formula = thrombotic_events_0_no_1_yes ~ fmd_au_ctomax,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 1
+```{r echo=TRUE}
+# modelo 2
+m1_1 <- glm(formula = thrombotic_events_0_no_1_yes ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition,
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_1,
+                             exponentiate = TRUE)
+
+```
+
+## Modelo 2
+```{r echo=TRUE}
+# modelo 3
+m1_2 <- glm(formula = thrombotic_events_0_no_1_yes ~ fmd_au_ctomax +
+              x1_man_2_women + age + sat_o2_percent + smoking +
+              obesity + pre_existing_condition + d_dimer_ng_m_l_feu + as.numeric(crp),
+          family = "binomial",
+          data = data)
+
+# resultados
+parameters::model_parameters(m1_2,
+                             exponentiate = TRUE)
+
+```
+
+# ANALISES (TESTE T) BLOOD PRESSURE
+
+```{r}
+# Separando os grupos (composite = yes or no) -----------------------------
+
+comp_no <- data |>
+  dplyr::filter(composite_death_icu_or_vent == 0) # grupo yes
+
+comp_yes<- data |>
+  dplyr::filter(composite_death_icu_or_vent == 1) # grupo no
+```
+
+# Comparação entre grupos - var cont --------------------------------------
+
+## Pressão arterial sistolica
+
+```{r  out.width="100%", echo=FALSE}
+# systolic_blood_presure_mm_hg
+
+# plot
+
+boxplot(formula =  systolic_blood_presure_mm_hg ~ composite_death_icu_or_vent,
+        data = data)
+
+# teste t
+
+t.test(x = comp_yes$systolic_blood_presure_mm_hg,
+       y = comp_no$systolic_blood_presure_mm_hg,
+       alternative = "two.sided",
+       paired = FALSE,
+       var.equal = TRUE,
+       conf.level = TRUE)
+```
+
+## Pressão arterial diastolica
+
+```{r out.width="100%", echo=FALSE}
+# diastolic_blood_pressure_mm_hg
+
+# plot
+
+boxplot(formula =  diastolic_blood_pressure_mm_hg ~ composite_death_icu_or_vent,
+        data = data)
+
+# teste t
+
+t.test(x = comp_yes$diastolic_blood_pressure_mm_hg,
+       y = comp_no$diastolic_blood_pressure_mm_hg,
+       alternative = "two.sided",
+       paired = FALSE,
+       var.equal = TRUE,
+       conf.level = TRUE)
+```
+
+
+
+
+
+
+
